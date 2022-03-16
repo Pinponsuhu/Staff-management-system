@@ -457,6 +457,10 @@ Ensure the default browser behavior of the `hidden` attribute.
   margin-top: 0.25rem;
   margin-bottom: 0.25rem;
 }
+.my-3 {
+  margin-top: 0.75rem;
+  margin-bottom: 0.75rem;
+}
 .mt-4 {
   margin-top: 1rem;
 }
@@ -567,6 +571,9 @@ Ensure the default browser behavior of the `hidden` attribute.
 }
 .h-8 {
   height: 2rem;
+}
+.h-1 {
+  height: 0.25rem;
 }
 .min-h-screen {
   min-height: 100vh;
@@ -691,6 +698,10 @@ Ensure the default browser behavior of the `hidden` attribute.
 .gap-y-1 {
   row-gap: 0.25rem;
 }
+.gap-x-1 {
+  -moz-column-gap: 0.25rem;
+       column-gap: 0.25rem;
+}
 .overflow-hidden {
   overflow: hidden;
 }
@@ -705,6 +716,9 @@ Ensure the default browser behavior of the `hidden` attribute.
 }
 .rounded-full {
   border-radius: 9999px;
+}
+.border {
+  border-width: 1px;
 }
 .border-b-2 {
   border-bottom-width: 2px;
@@ -882,6 +896,12 @@ Ensure the default browser behavior of the `hidden` attribute.
 }
 .p-4 {
   padding: 1rem;
+}
+.p-2\.5 {
+  padding: 0.625rem;
+}
+.p-2 {
+  padding: 0.5rem;
 }
 .px-8 {
   padding-left: 2rem;

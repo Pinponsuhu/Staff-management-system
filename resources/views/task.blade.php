@@ -6,7 +6,9 @@
             <div class="bg-white py-8 px-10">
                 <div class="flex justify-between items-center">
                     <h1 class="text-2xl font-bold mb-4">All Task</h1>
+                    @if (auth()->user()->user_type != 'staff')
                     <a href="/add/task" class="py-2.5 px-6 bg-purple-500 text-white font-bold">Add Task</a>
+                    @endif
                 </div>
                 @if (auth()->user()->user_type == 'staff')
                     <h1 class="text-lg font-bold mt-4">My Tasks</h1>

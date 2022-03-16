@@ -28,42 +28,38 @@
                         <h1 class="text-3xl font-bold">{{ $resolved }}</h1>
                     </div>
                 </div>
+
                 <div>
                     <div class="flex justify-between mt-7 items-center">
                         <h1 class="text-2xl font-bold">Unresolved Task</h1>
-                        <a href="#" class="py-2 font-bold px-6 bg-purple-500 text-white">View All</a>
+                        <a href="/task" class="py-2 font-bold px-6 bg-purple-500 text-white">View All</a>
                     </div>
                     <table class="w-11/12 mx-auto mt-4">
                         <thead>
                             <tr>
                                 <td class="w-1/5 text-lg font-bold uppercase text-purple-900">Assigned to</td>
                                 <td class="w-1/5 text-lg font-bold uppercase text-purple-900">Title</td>
-                                <td class="w-1/5 text-lg font-bold uppercase text-purple-900">Created by</td>
+                                <td class="w-1/5 text-lg font-bold uppercase text-purple-900">Deadline</td>
                                 <td class="w-1/5 text-lg font-bold uppercase text-purple-900">Created on</td>
                             </tr>
                         </thead>
                         <tbody>
+                            @foreach ($tasks as $task)
+                            @php
+                            // dd($task);
+                            // use App\Models\User;
+                                // $name = \App\Models\User::get();
+                                $name2 = \App\Models\User::where('id', '1')->first();
+                                // dd($name2);
+                            @endphp
                             <tr class="border-b-2 border-white">
-                                <td class="w-1/5 text-md capitalize px-3 bg-purple-200 py-3">Assigned to</td>
-                                <td class="w-1/5 text-md capitalize px-3 bg-purple-200 py-3">Title</td>
-                                <td class="w-1/5 text-md capitalize px-3 bg-purple-200 py-3">Created by</td>
-                                <td class="w-1/5 text-md capitalize px-3 bg-purple-200 py-3">Created on</td>
-                                <td class="w-1/5 text-md capitalize px-3 bg-purple-200 py-3"><a href="#" class="bg-purple-500 text-white px-5 py-2">Details</a></td>
+                                <td class="w-1/5 text-md capitalize px-3 bg-purple-200 py-3">{{ $name2->surname . ' ' . $name2->othernames }}</td>
+                                <td class="w-1/5 text-md capitalize px-3 bg-purple-200 py-3">{{ $task->subject }}</td>
+                                <td class="w-1/5 text-md capitalize px-3 bg-purple-200 py-3">{{ $task->deadline }}</td>
+                                <td class="w-1/5 text-md capitalize px-3 bg-purple-200 py-3">{{ $task->created_at }}</td>
+                                <td class="w-1/5 text-md capitalize px-3 bg-purple-200 py-3"><a href="/task/follow/up/{{ $task->id }}" class="bg-purple-500 text-white px-5 py-2">Details</a></td>
                             </tr>
-                            <tr class="border-b-2 border-white">
-                                <td class="w-1/5 text-md capitalize px-3 bg-purple-200 py-3">Assigned to</td>
-                                <td class="w-1/5 text-md capitalize px-3 bg-purple-200 py-3">Title</td>
-                                <td class="w-1/5 text-md capitalize px-3 bg-purple-200 py-3">Created by</td>
-                                <td class="w-1/5 text-md capitalize px-3 bg-purple-200 py-3">Created on</td>
-                                <td class="w-1/5 text-md capitalize px-3 bg-purple-200 py-3"><a href="#" class="bg-purple-500 text-white px-5 py-2">Details</a></td>
-                            </tr>
-                            <tr class="border-b-2 border-white">
-                                <td class="w-1/5 text-md capitalize px-3 bg-purple-200 py-3">Assigned to</td>
-                                <td class="w-1/5 text-md capitalize px-3 bg-purple-200 py-3">Title</td>
-                                <td class="w-1/5 text-md capitalize px-3 bg-purple-200 py-3">Created by</td>
-                                <td class="w-1/5 text-md capitalize px-3 bg-purple-200 py-3">Created on</td>
-                                <td class="w-1/5 text-md capitalize px-3 bg-purple-200 py-3"><a href="#" class="bg-purple-500 text-white px-5 py-2">Details</a></td>
-                            </tr>
+                            @endforeach
                         </tbody>
                     </table>
                 </div>

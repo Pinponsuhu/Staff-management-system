@@ -22,20 +22,34 @@ class NavigateController extends Controller
     }
 
     public function index(){
+        if(auth()->user()->user_type == 'staff'){
+            return redirect('/task');
+        }
         $staffs = Staff::count();
         $unresolved = Task::where('status','unresolved')->count();
+        $tasks = Task::latest()->where('status','unresolved')->limit(3)->get();
+        // dd($tasks);
         $resolved = Task::where('status','resolved')->count();
-        return view('dashboard',['staff' => $staffs,'unresolved' => $unresolved,'resolved' => $resolved]);
+        return view('dashboard',['staff' => $staffs,'unresolved' => $unresolved,'resolved' => $resolved,'tasks'=>$tasks]);
     }
     public function report(){
+        if(auth()->user()->user_type == 'staff'){
+            return redirect('/task');
+        }
         return view('report');
     }
     public function staff(){
+        if(auth()->user()->user_type == 'staff'){
+            return redirect('/task');
+        }
         $staffs = Staff::orderBy('surname', 'ASC')->paginate(1);
         // dd($staffs);
         return view('staffs',['staffs'=> $staffs]);
     }
     public function new_staff(){
+        if(auth()->user()->user_type == 'staff'){
+            return redirect('/task');
+        }
         return view('add-staff');
     }
     public function store_staff(Request $request){
@@ -92,6 +106,9 @@ class NavigateController extends Controller
     }
 
     public function staff_details($id){
+        if(auth()->user()->user_type == 'staff'){
+            return redirect('/task');
+        }
         $staff = Staff::where('id_number',$id)->first();
         // dd($staff);
         $qual = Qualification::where('staff_id',$staff->id)->get();
@@ -100,6 +117,9 @@ class NavigateController extends Controller
     }
 
     public function add_qualification(Request $request){
+        if(auth()->user()->user_type == 'staff'){
+            return redirect('/task');
+        }
         $request->validate([
             'type' => ['required',new alpha_space],
             'start_date' => 'required|date',
@@ -122,6 +142,9 @@ class NavigateController extends Controller
     }
 
     public function edit_staff($id){
+        if(auth()->user()->user_type == 'staff'){
+            return redirect('/task');
+        }
         $staff = Staff::find($id);
         $genders = array('Male','Female');
         return view('edit-staff', ['staff' => $staff,'genders' => $genders]);
@@ -157,10 +180,16 @@ class NavigateController extends Controller
     }
 
     public function edit_picture($id){
+        if(auth()->user()->user_type == 'staff'){
+            return redirect('/task');
+        }
         return view('change-picture',['id' => $id]);
     }
 
     public function update_picture(Request $request){
+        if(auth()->user()->user_type == 'staff'){
+            return redirect('/task');
+        }
         $request->validate([
             'picture' => 'required|mimes:png,jpg,jpeg|max:1024'
         ]);
@@ -183,6 +212,9 @@ class NavigateController extends Controller
     }
 
     public function delete_qualification($id){
+        if(auth()->user()->user_type == 'staff'){
+            return redirect('/task');
+        }
         $qualification = Qualification::find($id);
 
         $qualification->delete();
@@ -191,6 +223,9 @@ class NavigateController extends Controller
     }
 
     public function delete_staff($id){
+        if(auth()->user()->user_type == 'staff'){
+            return redirect('/task');
+        }
         $staff = Staff::find($id);
 
         $staff->delete();
@@ -207,6 +242,9 @@ class NavigateController extends Controller
         return view('task',['tasks' => $tasks]);
     }
     public function add_task(){
+        if(auth()->user()->user_type == 'staff'){
+            return redirect('/task');
+        }
         $users = User::select('surname','othernames','id')->where('user_type','staff')->get();
         // dd($users);
         return view('add-task',['users' => $users]);
@@ -360,6 +398,25 @@ class NavigateController extends Controller
 
     public function logout(){
         auth()->logout();
+        return redirect('/login');
+    }
+
+    public function show_password($id){
+        return view('change-password',['id'=>$id]);
+    }
+
+    public function store_pasword(Request $request){
+        $request->validate([
+            'password' => 'required|confirmed'
+        ]);
+
+        $user = User::find($request->id);
+
+        $user->password = Hash::make($request->password);
+        $user->save();
+
+        auth()->logout();
+
         return redirect('/login');
     }
 }

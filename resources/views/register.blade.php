@@ -17,11 +17,12 @@
     </style>
 </head>
 <body class="bg-purple-100">
-    <div class="w-8/12 gap-x-3 items-center mx-auto bg-white px-14 mt-8 py-10">
-        <img src="{{ asset('img/lasu.png') }}" class="h-16 w-auto" alt="">
+    <div class="w-8/12 gap-x-3 items-center mx-auto bg-white px-10 mt-6 py-8">
+        <img src="{{ asset('img/lasu.png') }}" class="h-14 w-auto" alt="">
         <h1 class="font-bold text-3xl text-purple-900 mt-4">Register Staff</h1>
         <p class="text-md font-medium text-gray-400">Add new Staff details</p>
-        <form action="" method="post" class="mt-5 gap-x-4 grid grid-cols-2 w-full">
+        <form action="/register" method="post" enctype="multipart/form-data" class="mt-5 gap-x-4 grid grid-cols-2 w-full">
+            @csrf
             <div class="mb-3">
                 <input type="file" name="picture" class="block w-full border-b-2 border-purple-900 py-3 outline-none bg-purple-100 px-1.5" placeholder="">
                 @error('picture')
@@ -41,7 +42,35 @@
                 @enderror
             </div>
             <div class="mb-3">
-                <input type="text" name="phone_number" class="block w-full border-b-2 border-purple-900 py-3 outline-none bg-purple-100 px-1.5" placeholder="phone_number">
+                <input type="text" name="department" class="block w-full border-b-2 border-purple-900 py-3 outline-none bg-purple-100 px-1.5" placeholder="Department">
+                @error('department')
+                <p class="mt-0.5 text-sm text-red-500">{{ $message }}</p>
+                @enderror
+            </div>
+            <div class="mb-3">
+                <input type="text" name="id_number" class="block w-full border-b-2 border-purple-900 py-3 outline-none bg-purple-100 px-1.5" placeholder="Enter ID number">
+                @error('id_number')
+                    <p class="mt-0.5 text-sm text-red-500">{{ $message }}</p>
+                @enderror
+            </div>
+            <div class="mb-3">
+                <select name="gender" class="block w-full border-b-2 border-purple-900 py-3 outline-none bg-purple-100 px-1.5" id="">
+                    <option value="" disabled selected>-- Select Gender --</option>
+                    <option value="Female">Female</option>
+                    <option value="Male">Male</option>
+                </select>
+                @error('gender')
+                    <p class="mt-0.5 text-sm text-red-500">{{ $message }}</p>
+                @enderror
+            </div>
+            <div class="mb-3">
+                <input type="date" name="date_of_birth" class="block w-full border-b-2 border-purple-900 py-3 outline-none bg-purple-100 px-1.5">
+                @error('date_of_birth')
+                    <p class="mt-0.5 text-sm text-red-500">{{ $message }}</p>
+                @enderror
+            </div>
+            <div class="mb-3">
+                <input type="text" name="phone_number" class="block w-full border-b-2 border-purple-900 py-3 outline-none bg-purple-100 px-1.5" placeholder="Phone Number">
                 @error('phone_number')
                 <p class="mt-0.5 text-sm text-red-500">{{ $message }}</p>
                 @enderror
