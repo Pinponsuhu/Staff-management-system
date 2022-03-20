@@ -11,6 +11,7 @@ use App\Models\TaskReplyFile;
 use App\Models\User;
 use App\Rules\alpha_space;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Hash;
 
@@ -23,7 +24,7 @@ class NavigateController extends Controller
 
     public function index(){
         if(auth()->user()->user_type == 'staff'){
-            return redirect('/task');
+             return redirect('/task/' . Crypt::encrypt('unresolved'));
         }
         $staffs = Staff::count();
         $unresolved = Task::where('status','unresolved')->count();
@@ -34,13 +35,13 @@ class NavigateController extends Controller
     }
     public function report(){
         if(auth()->user()->user_type == 'staff'){
-            return redirect('/task');
+             return redirect('/task/' . Crypt::encrypt('unresolved'));
         }
         return view('report');
     }
     public function staff(){
         if(auth()->user()->user_type == 'staff'){
-            return redirect('/task');
+             return redirect('/task/' . Crypt::encrypt('unresolved'));
         }
         $staffs = Staff::orderBy('surname', 'ASC')->paginate(1);
         // dd($staffs);
@@ -48,7 +49,7 @@ class NavigateController extends Controller
     }
     public function new_staff(){
         if(auth()->user()->user_type == 'staff'){
-            return redirect('/task');
+             return redirect('/task/' . Crypt::encrypt('unresolved'));
         }
         return view('add-staff');
     }
@@ -95,6 +96,7 @@ class NavigateController extends Controller
         $user->department = $request->department;
         $user->phone_number = $request->phone_number;
         $user->email = $request->email;
+        $user->is_admin = 0;
         $user->user_type = 'staff';
         $user->password = Hash::make('password1');
         $user->save();
@@ -107,7 +109,7 @@ class NavigateController extends Controller
 
     public function staff_details($id){
         if(auth()->user()->user_type == 'staff'){
-            return redirect('/task');
+             return redirect('/task/' . Crypt::encrypt('unresolved'));
         }
         $staff = Staff::where('id_number',$id)->first();
         // dd($staff);
@@ -118,7 +120,7 @@ class NavigateController extends Controller
 
     public function add_qualification(Request $request){
         if(auth()->user()->user_type == 'staff'){
-            return redirect('/task');
+             return redirect('/task/' . Crypt::encrypt('unresolved'));
         }
         $request->validate([
             'type' => ['required',new alpha_space],
@@ -143,7 +145,7 @@ class NavigateController extends Controller
 
     public function edit_staff($id){
         if(auth()->user()->user_type == 'staff'){
-            return redirect('/task');
+             return redirect('/task/' . Crypt::encrypt('unresolved'));
         }
         $staff = Staff::find($id);
         $genders = array('Male','Female');
@@ -181,14 +183,14 @@ class NavigateController extends Controller
 
     public function edit_picture($id){
         if(auth()->user()->user_type == 'staff'){
-            return redirect('/task');
+             return redirect('/task/' . Crypt::encrypt('unresolved'));
         }
         return view('change-picture',['id' => $id]);
     }
 
     public function update_picture(Request $request){
         if(auth()->user()->user_type == 'staff'){
-            return redirect('/task');
+             return redirect('/task/' . Crypt::encrypt('unresolved'));
         }
         $request->validate([
             'picture' => 'required|mimes:png,jpg,jpeg|max:1024'
@@ -213,7 +215,7 @@ class NavigateController extends Controller
 
     public function delete_qualification($id){
         if(auth()->user()->user_type == 'staff'){
-            return redirect('/task');
+             return redirect('/task/' . Crypt::encrypt('unresolved'));
         }
         $qualification = Qualification::find($id);
 
@@ -224,7 +226,7 @@ class NavigateController extends Controller
 
     public function delete_staff($id){
         if(auth()->user()->user_type == 'staff'){
-            return redirect('/task');
+             return redirect('/task/' . Crypt::encrypt('unresolved'));
         }
         $staff = Staff::find($id);
 
@@ -233,17 +235,17 @@ class NavigateController extends Controller
         return redirect('/staffs');
     }
 
-    public function task(){
+    public function task($task){
         if(auth()->user()->user_type !== 'staff'){
-            $tasks = Task::latest()->get();
+            $tasks = Task::latest()->where('status',Crypt::decrypt($task))->get();
         }else{
-            $tasks = Task::latest()->where('status','unresolved')->where('assigned_to',auth()->user()->id)->get();
+            $tasks = Task::latest()->where('status',Crypt::decrypt($task))->where('assigned_to',auth()->user()->id)->get();
         }
-        return view('task',['tasks' => $tasks]);
+        return view('task',['tasks' => $tasks,'type' => Crypt::decrypt($task)]);
     }
     public function add_task(){
         if(auth()->user()->user_type == 'staff'){
-            return redirect('/task');
+             return redirect('/task/' . Crypt::encrypt('unresolved'));
         }
         $users = User::select('surname','othernames','id')->where('user_type','staff')->get();
         // dd($users);
@@ -305,7 +307,7 @@ class NavigateController extends Controller
                 }
                 }
         }
-        return redirect('/task');
+         return redirect('/task/' . Crypt::encrypt('unresolved'));
     }
 
     public function follow_up($id){
@@ -393,7 +395,7 @@ class NavigateController extends Controller
             }
         }
 
-        return redirect('/task');
+         return redirect('/task/' . Crypt::encrypt('unresolved'));
     }
 
     public function logout(){
@@ -418,5 +420,75 @@ class NavigateController extends Controller
         auth()->logout();
 
         return redirect('/login');
+    }
+
+    public function search_staff(Request $request){
+        if(auth()->user()->is_admin == 'staff'){
+             return redirect('/task/' . Crypt::encrypt('unresolved'));
+        }
+        $staffs = Staff::where('id_number',$request->search)->orWhere('surname',$request->search)->get();
+
+        return view('search-staff',['staffs' => $staffs, 'search' => $request->search]);
+    }
+
+    public function new_admin(){
+        if(auth()->user()->is_admin == 0){
+            return redirect('/task/' . Crypt::encrypt('unresolved'));
+        }
+        return view('add-admin');
+    }
+
+    public function store_admin(Request $request){
+            // dd($request->all());
+            $request->validate([
+                'picture' => 'required|mimes:png,jpg,jpeg|max:1024',
+                'surname' => 'required|alpha',
+                'othernames' => ['required',new alpha_space],
+                'id_number' => 'required|numeric',
+                'date_of_birth' => 'required|date',
+                'gender' => 'required',
+                'department' => 'required',
+                'phone_number' => 'required|numeric|digits:11',
+                'email' => 'required|email'
+            ]);
+
+            // dd($request->all());
+
+            $staff = new Staff;
+            $destination = 'public/staffs';
+
+            $path = $request->file('picture')->store($destination);
+
+            $staff->picture = str_replace('public/staffs/','',$path);
+            $staff->surname = $request->surname;
+            $staff->othernames = $request->othernames;
+            $staff->id_number = $request->id_number;
+            $staff->date_of_birth = $request->date_of_birth;
+            $staff->gender = $request->gender;
+            $staff->department = $request->department;
+            $staff->phone_number = $request->phone_number;
+            $staff->email = $request->email;
+            $staff->save();
+
+            $user = new User;
+
+            $user->picture = str_replace('public/staffs/','',$path);
+            $user->surname = $request->surname;
+            $user->othernames = $request->othernames;
+            $user->id_number = $request->id_number;
+            $user->date_of_birth = $request->date_of_birth;
+            $user->gender = $request->gender;
+            $user->department = $request->department;
+            $user->phone_number = $request->phone_number;
+            $user->email = $request->email;
+            $user->is_admin = 0;
+            $user->user_type = 'staff';
+            $user->password = Hash::make('password1');
+            $user->save();
+
+
+
+            return redirect('/staffs');
+
     }
 }

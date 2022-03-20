@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Crypt;
 
 class LoginController extends Controller
 {
@@ -26,7 +27,7 @@ class LoginController extends Controller
         }
 
         if(auth()->user()->user_type == 'staff'){
-            return redirect('/task');
+             return redirect('/task/' . Crypt::encrypt('unresolved'));
         }
         return redirect('/');
     }

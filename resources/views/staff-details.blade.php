@@ -9,6 +9,9 @@
                     <div class="flex items-center gap-x-3">
                         <a href="/edit/staff/{{ $staff->id }}" class="py-2 px-5 bg-blue-500 font-bold text-white">Edit</a>
                         <a href="/delete/staff/{{ $staff->id }}" class="py-2 px-5 bg-red-500 font-bold text-white">Delete</a>
+                        @if (auth()->user()->is_admin == '1')
+                        <a href="/password/staff/{{ $staff->id }}" class="py-2 px-5 bg-green-500 font-bold text-white">Reset Password</a>
+                        @endif
                     </div>
                 </div>
                 <div class="w-full mx-auto gap-x-4 flex items-start">

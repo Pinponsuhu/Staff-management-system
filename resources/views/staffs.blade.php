@@ -8,12 +8,15 @@
                     <h1 class="text-2xl font-bold">All Staffs</h1>
                     <a href="/new/staff" class="py-2 font-bold px-6 bg-purple-500 text-white">Add Staff</a>
                 </div>
-                <div class="flex w-8/12 mx-auto items-center">
-                    <div class="p-2.5 bg-purple-500 border-b-2 border-purple-500 text-white">
-                        <i class="fa fa-search  text-2xl"></i>
-                    </div>
-                    <input type="search" class="my-3 block w-full mx-auto outline-none px-1 py-3 border-b-2 bg-purple-100 border-purple-500" placeholder="Search By Surname or ID Number">
+                <form method="get" action="/search/staff">
+                    @csrf
+                    <div class="flex w-8/12 mx-auto items-center">
+                        <div class="p-2.5 bg-purple-500 border-b-2 border-purple-500 text-white">
+                            <i class="fa fa-search  text-2xl"></i>
+                        </div>
+                        <input type="search" name="search" class="my-3 block w-full mx-auto outline-none px-1 py-3 border-b-2 bg-purple-100 border-purple-500" placeholder="Search By Surname or ID Number">
                 </div>
+                </form>
                 <div class="w-full mx-auto gap-x-2">
                     <table class="w-11/12 mx-auto mt-4">
                         <thead>

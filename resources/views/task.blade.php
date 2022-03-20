@@ -5,13 +5,24 @@
         <div class="px-5 mt-4">
             <div class="bg-white py-8 px-10">
                 <div class="flex justify-between items-center">
-                    <h1 class="text-2xl font-bold mb-4">All Task</h1>
-                    @if (auth()->user()->user_type != 'staff')
+                    <h1 class="text-2xl font-bold">Task</h1>
+                    @if (auth()->user()->user_type == 'manager')
                     <a href="/add/task" class="py-2.5 px-6 bg-purple-500 text-white font-bold">Add Task</a>
                     @endif
                 </div>
                 @if (auth()->user()->user_type == 'staff')
                     <h1 class="text-lg font-bold mt-4">My Tasks</h1>
+                    <div class="flex justify-between items-center px-8 my-3">
+                        <h1 class="text-lg capitalize font-bold mt-4">All {{ $type }} Tasks</h1>
+                        <div class="flex items-center gap-x-4">
+                            @if ($type == 'unresolved')
+                                <a href="/task/{{ Crypt::encrypt('resolved') }}" class="px-6 py-2 bg-blue-500 text-white font-bold">Resolved</a>
+                            @else
+                            <a href="/task/{{ Crypt::encrypt('unresolved') }}" class="px-6 py-2 bg-green-500 text-white font-bold">Unresolved</a>
+                            @endif
+
+                        </div>
+                    </div>
                     <div class="w-full px-8 mx-auto ">
                         <table class="w-full">
                             <thead>
@@ -42,7 +53,17 @@
                     </div>
                     @else
 
-                    <h1 class="text-lg font-bold mt-4">All Tasks</h1>
+                    <div class="flex justify-between items-center px-8 my-3">
+                        <h1 class="text-lg capitalize font-bold mt-4">All {{ $type }} Tasks</h1>
+                        <div class="flex items-center gap-x-4">
+                            @if ($type == 'unresolved')
+                                <a href="/task/{{ Crypt::encrypt('resolved') }}" class="px-6 py-2 bg-blue-500 text-white font-bold">Resolved</a>
+                            @else
+                            <a href="/task/{{ Crypt::encrypt('unresolved') }}" class="px-6 py-2 bg-green-500 text-white font-bold">Unresolved</a>
+                            @endif
+
+                        </div>
+                    </div>
                     <div class="w-full px-8 mx-auto ">
                         <table class="w-full">
                             <thead>

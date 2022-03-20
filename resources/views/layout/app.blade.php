@@ -36,7 +36,7 @@
                 </li>
             </a>
             @endif
-            @if (auth()->user()->user_type != 'staff')
+            @if (auth()->user()->user_type != 'staff' && auth()->user()->is_admin == '1')
             <a href="/report">
                 <li class="flex flex-col mb-2 gap-y-1.5 p-3 hover:bg-purple-100 hover:text-purple-400 justify-center text-white items-center">
                     <i class="fa fa-file-alt  fa-2x text-center"></i>
@@ -44,12 +44,20 @@
                 </li>
             </a>
             @endif
-            <a href="/task">
+            <a href="/task/{{ Crypt::encrypt('unresolved') }}">
                 <li class="flex flex-col mb-2 gap-y-1.5 p-3 hover:bg-purple-100 hover:text-purple-400 justify-center text-white items-center">
                     <i class="fa fa-tasks  fa-2x text-center"></i>
                     <p class="font-bold text-md">Task</p>
                 </li>
             </a>
+            @if (auth()->user()->is_admin == 1)
+            <a href="/new/admin">
+                <li class="flex flex-col mb-2 gap-y-1.5 p-3 hover:bg-purple-100 hover:text-purple-400 justify-center text-white items-center">
+                    <i class="fa fa-user  fa-2x text-center"></i>
+                    <p class="font-bold text-md">Add Admin</p>
+                </li>
+            </a>
+            @endif
         </ul>
     </nav>
     @yield('content')

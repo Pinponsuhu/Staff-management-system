@@ -11,7 +11,7 @@
                     <textarea name="message" placeholder="Send Message" class="outline-none shadow-md w-full block resize-none py-3 px-3 border-l-4 rounded-md border-purple-400" id="" cols="30" rows="4">{{ old('content') }}</textarea>
                     <label class="block font-bold mb-1 mt-2 text-md text-purple-800">File Attachment <span class="font-medium">(Optional)</span></label>
                     <input type="file" name="files[]" multiple class="block text-purple-500 py-3 px-4 w-full shadow-md rounded-md border-l-4 border-purple-400" id="">
-                    @if (auth()->user()->user_type != 'staff')
+                    @if (auth()->user()->user_type == 'manager')
                         <select name="status" class="mt-2 block" id="">
                             <option value="" disabled selected>-- Set Task Status --</option>
                             <option value="resolved">Resolved</option>
