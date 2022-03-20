@@ -43,6 +43,7 @@ Route::post('/login',[LoginController::class, 'process']);
 Route::get('/register',[RegisterStaff::class, 'show']);
 Route::post('/register',[RegisterStaff::class, 'store_staff']);
 Route::get('/logout',[NavigateController::class,'logout']);
+Route::get('/generate/report',[NavigateController::class,'view_generate']);
 Route::get('/new/admin',[NavigateController::class, 'new_admin']);
 Route::post('/new/admin',[NavigateController::class, 'store_admin']);
 

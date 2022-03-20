@@ -491,4 +491,16 @@ class NavigateController extends Controller
             return redirect('/staffs');
 
     }
+
+    public function view_generate(Request $request){
+
+        $request->validate([
+            'from' => 'required|date',
+            'to' => 'required|date'
+        ]);
+
+        $tasks = Task::whereBetween('created_at',[$request->from,$request->to])->orWhereBetween('created_at',[$request->to,$request->from])->get();
+
+        return view('view-report',['tasks' => $tasks]);
+    }
 }
