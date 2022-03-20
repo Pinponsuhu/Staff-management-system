@@ -19,7 +19,7 @@
     </style>
 </head>
 <body class="bg-purple-100 flex">
-    <nav class="bg-purple-400 w-32 pt-4 h-screen">
+    <nav class="bg-purple-400 hidden overflow-y-scroll md:block fixed md:relative w-32 pt-4 h-screen">
         <img src="{{ asset('img/lasu.png') }}" class="h-12 w-12 block mx-auto" alt="">
         <ul class="mt-6">
             @if (auth()->user()->user_type != 'staff')

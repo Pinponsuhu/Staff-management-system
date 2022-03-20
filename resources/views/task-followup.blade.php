@@ -2,8 +2,8 @@
 @section('content')
     <main class="w-full h-screen overflow-y-scroll">
         @include('layout.nav')
-        <div class="px-5 mt-4">
-            <div class="bg-white py-8 px-10">
+        <div class="px-2 md:px-5 mt-4">
+            <div class="bg-white py-8 md:px-10 px-3">
                 <div>
                     <h1 class="text-2xl font-bold mb-2 text-purple-500">Subject: {{ $task->subject }}</h1>
                 <p class="text-md mb-3">{{ $task->desc }}</p>

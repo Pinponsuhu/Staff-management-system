@@ -1,16 +1,16 @@
 @extends('layout.app')
 @section('content')
-    <main class="w-full">
+    <main class="w-full h-screen overflow-y-scroll">
         @include('layout.nav')
-        <div class="px-5 mt-4">
-            <div class="bg-white py-8 px-10">
+        <div class="px-2 md:px-5 mt-4">
+            <div class="bg-white py-8 md:px-5 lg:px-10 px-3">
                 <div class="flex items-center justify-between">
-                    <h1 class="text-2xl font-bold">All Staffs</h1>
+                    <h1 class="text-xl md:text-2xl font-bold">All Staffs</h1>
                     <a href="/new/staff" class="py-2 font-bold px-6 bg-purple-500 text-white">Add Staff</a>
                 </div>
                 <form method="get" action="/search/staff">
                     @csrf
-                    <div class="flex w-8/12 mx-auto items-center">
+                    <div class="flex md:w-8/12 w-11/12 mx-auto items-center">
                         <div class="p-2.5 bg-purple-500 border-b-2 border-purple-500 text-white">
                             <i class="fa fa-search  text-2xl"></i>
                         </div>
@@ -18,6 +18,7 @@
                 </div>
                 </form>
                 <div class="w-full mx-auto gap-x-2">
+                   <div class="overflow-x-scroll">
                     <table class="w-11/12 mx-auto mt-4">
                         <thead>
                             <tr class="border-b-2 border-gray-800 pb-2">
@@ -41,6 +42,7 @@
                             @endforeach
                         </tbody>
                     </table>
+                   </div>
                     <div class="mt-3">
                         {{ $staffs->links() }}
                     </div>

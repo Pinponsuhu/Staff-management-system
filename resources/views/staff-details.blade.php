@@ -2,24 +2,24 @@
 @section('content')
     <main class="w-full h-screen overflow-y-scroll">
         @include('layout.nav')
-        <div class="px-5 mt-4">
-            <div class="bg-white py-8 px-10">
-                <div class="flex justify-between mb-4 items-center">
+        <div class="px-2 md:px-5 mt-4">
+            <div class="bg-white py-8 md:px-5 lg:px-10 px-3">
+                <div class="flex justify-between md:flex-row flex-col mb-4 items-center">
                     <h1 class="text-2xl font-bold">Staff Details</h1>
-                    <div class="flex items-center gap-x-3">
-                        <a href="/edit/staff/{{ $staff->id }}" class="py-2 px-5 bg-blue-500 font-bold text-white">Edit</a>
-                        <a href="/delete/staff/{{ $staff->id }}" class="py-2 px-5 bg-red-500 font-bold text-white">Delete</a>
+                    <div class="flex  items-center gap-x-3">
+                        <a href="/edit/staff/{{ Crypt::encrypt($staff->id) }}" class="py-2 px-5 bg-blue-500 font-bold text-white">Edit</a>
+                        <a href="/delete/staff/{{ Crypt::encrypt($staff->id) }}" class="py-2 px-5 bg-red-500 font-bold text-white">Delete</a>
                         @if (auth()->user()->is_admin == '1')
-                        <a href="/password/staff/{{ $staff->id }}" class="py-2 px-5 bg-green-500 font-bold text-white">Reset Password</a>
+                        <a href="/password/staff/{{ Crypt::encrypt($staff->id) }}" class="py-2 px-5 bg-green-500 font-bold text-white">Reset Password</a>
                         @endif
                     </div>
                 </div>
-                <div class="w-full mx-auto gap-x-4 flex items-start">
+                <div class="w-full mx-auto gap-x-4 flex md:flex-row flex-col items-start">
                     <div>
                         <img src="{{ asset('storage/staffs/' . $staff->picture) }}" class="w-40 h-auto block mb-3" alt="">
-                        <a href="/change/picture/{{ $staff->id }}" class="font-bold py-3 px-6 bg-purple-400 text-white ">Change Picture</a>
+                        <a href="/change/picture/{{ Crypt::encrypt($staff->id) }}" class="font-bold py-3 px-6 bg-purple-400 text-white ">Change Picture</a>
                     </div>
-                    <div>
+                    <div class="mt-4 md:mt-0">
                         <h1 class="text-2xl font-bold">{{ $staff->surname . ' ' . $staff->othernames }}</h1>
                         <p class="mt-2"><b>Staff ID:</b> {{ $staff->id_number }}</p>
                         <p class="mt-2 capitalize"><b>Department:</b> {{ $staff->department }}</p>
@@ -56,9 +56,9 @@
         <div class="flex justify-end mt-4 mr-4">
             <i onclick="clsQualifiaction()" class="fa fa-times cursor-pointer fa-2x text-white"></i>
         </div>
-        <form action="/add/qualification/{{ $staff->id }}" enctype="multipart/form-data" method="POST">
+        <form action="/add/qualification/{{ Crypt::encrypt($staff->id) }}" enctype="multipart/form-data" method="POST">
             @csrf
-            <div class="w-80 md:w-96 mx-auto md:grid md:grid-cols-2 gap-x-4 bg-white mt-14 px-6 py-8">
+            <div class="w-80 md:w-96 mx-auto md:grid md:grid-cols-2 gap-x-4 bg-white mt:7 md:mt-14 px-6 py-8">
                 <div class="md:col-span-2">
                     <label class="text-md font-bold block mb-0.5">Qualification Type:</label>
                     <input type="text" name="type" id="" class="shadow-md outline-none block w-full py-3 border-b-2 border-purple-500 px-1" placeholder="Qualification Type">

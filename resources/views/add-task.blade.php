@@ -2,11 +2,11 @@
 @section('content')
     <main class="w-full h-screen overflow-y-scroll">
         @include('layout.nav')
-        <div class="px-8 mt-4">
-            <div class="bg-white py-8 px-10">
-                <h1 class="text-2xl font-bold mb-4">Add New Task</h1>
+        <div class="px-2 md:px-5 mt-4">
+            <div class="bg-white py-8 md:px-5 lg:px-10 px-3">
+                <h1 class="text-xl md:text-2xl font-bold mb-4">Add New Task</h1>
                 <div class="w-full mx-auto gap-x-2">
-                    <form action="/add/task" enctype="multipart/form-data" method="post" class="w-5/12 grid grid-cols-2 gap-x-4 mx-auto mt-4 items-center">
+                    <form action="/add/task" enctype="multipart/form-data" method="post" class="w-11/12 md:w-5/12 grid md:grid-cols-2 gap-x-4 mx-auto mt-4 items-center">
                         @csrf
                         <div class="col-span-2 mb-3">
                             <label class="font-bold block mb-1">Subject</label>

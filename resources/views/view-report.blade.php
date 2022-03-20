@@ -1,6 +1,6 @@
 @extends('layout.app')
 @section('content')
-    <main class="w-full">
+    <main class="w-full h-screen overflow-y-scroll">
         @include('layout.nav')
         <div class="px-5 mt-4">
             <div class="bg-white py-8 px-10">

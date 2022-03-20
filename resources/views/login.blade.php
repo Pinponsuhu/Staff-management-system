@@ -17,7 +17,7 @@
     </style>
 </head>
 <body class="bg-purple-100">
-    <div class="w-4/12 mx-auto bg-white px-14 mt-12 py-10">
+    <div class="md:w-6/12 lg:w-4/12 w-11/12 mx-auto bg-white px-4 md:px-14 mt-8 md:mt-12 py-6 md:py-10">
         <img src="{{ asset('img/lasu.png') }}" class="h-16 w-auto" alt="">
         <h1 class="font-bold text-3xl text-purple-900 mt-6">Welcome Back</h1>
         <p class="text-md font-medium text-gray-400">Sign in to continue</p>

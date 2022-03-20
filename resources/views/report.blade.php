@@ -1,12 +1,12 @@
 @extends('layout.app')
 @section('content')
-    <main class="w-full">
+    <main class="w-full h-screen overflow-y-scroll">
         @include('layout.nav')
-        <div class="px-5 mt-4">
-            <div class="bg-white py-8 px-10">
+        <div class="px-2 md:px-5 mt-4">
+            <div class="bg-white py-8 md:px-5 lg:px-10 px-3">
                 <h1 class="text-2xl font-bold mb-4">Get Report</h1>
                 <div class=" w-full mx-auto gap-x-2">
-                    <form action="/generate/report" class="w-4/12 mx-auto" method="GET">
+                    <form action="/generate/report" class="w-11/12 md:w-4/12 mx-auto" method="GET">
                         @csrf
                         <label class="font-bold block mb-1">From</label>
                         <input type="date" name="from" class="block px-1 outline-none w-full py-3 border-b-2 border-gray-500">

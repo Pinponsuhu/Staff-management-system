@@ -43,7 +43,7 @@ class NavigateController extends Controller
         if(auth()->user()->user_type == 'staff'){
              return redirect('/task/' . Crypt::encrypt('unresolved'));
         }
-        $staffs = Staff::orderBy('surname', 'ASC')->paginate(1);
+        $staffs = Staff::orderBy('surname', 'ASC')->paginate(15);
         // dd($staffs);
         return view('staffs',['staffs'=> $staffs]);
     }
@@ -147,7 +147,7 @@ class NavigateController extends Controller
         if(auth()->user()->user_type == 'staff'){
              return redirect('/task/' . Crypt::encrypt('unresolved'));
         }
-        $staff = Staff::find($id);
+        $staff = Staff::find(Crypt::decrypt($id));
         $genders = array('Male','Female');
         return view('edit-staff', ['staff' => $staff,'genders' => $genders]);
     }
@@ -166,7 +166,7 @@ class NavigateController extends Controller
 
         // dd($request->all());
 
-        $staff = Staff::find($request->id);
+        $staff = Staff::find(Crypt::decrypt($request->id));
 
         $staff->surname = $request->surname;
         $staff->othernames = $request->othernames;
@@ -182,10 +182,11 @@ class NavigateController extends Controller
     }
 
     public function edit_picture($id){
-        if(auth()->user()->user_type == 'staff'){
-             return redirect('/task/' . Crypt::encrypt('unresolved'));
-        }
-        return view('change-picture',['id' => $id]);
+         $idd = Crypt::decrypt($id);
+        // if(auth()->user()->user_type == 'staff'){
+        //      return redirect('/task/' . Crypt::encrypt('unresolved'));
+        // }
+        return view('change-picture',['id' => $idd]);
     }
 
     public function update_picture(Request $request){
@@ -228,7 +229,7 @@ class NavigateController extends Controller
         if(auth()->user()->user_type == 'staff'){
              return redirect('/task/' . Crypt::encrypt('unresolved'));
         }
-        $staff = Staff::find($id);
+        $staff = Staff::find(Crypt::decrypt($id));
 
         $staff->delete();
 
@@ -404,7 +405,7 @@ class NavigateController extends Controller
     }
 
     public function show_password($id){
-        return view('change-password',['id'=>$id]);
+        return view('change-password',['id'=>Crypt::decrypt($id)]);
     }
 
     public function store_pasword(Request $request){
@@ -412,7 +413,7 @@ class NavigateController extends Controller
             'password' => 'required|confirmed'
         ]);
 
-        $user = User::find($request->id);
+        $user = User::find(Crypt::decrypt($request->id));
 
         $user->password = Hash::make($request->password);
         $user->save();
@@ -481,8 +482,8 @@ class NavigateController extends Controller
             $user->department = $request->department;
             $user->phone_number = $request->phone_number;
             $user->email = $request->email;
-            $user->is_admin = 0;
-            $user->user_type = 'staff';
+            $user->is_admin = 1;
+            $user->user_type = 'admin';
             $user->password = Hash::make('password1');
             $user->save();
 
@@ -502,5 +503,50 @@ class NavigateController extends Controller
         $tasks = Task::whereBetween('created_at',[$request->from,$request->to])->orWhereBetween('created_at',[$request->to,$request->from])->get();
 
         return view('view-report',['tasks' => $tasks]);
+    }
+
+    public function view_profile(){
+        $staff = User::where('id',auth()->user()->id)->first();
+        $genders = array('Male','Female');
+        return view('profile',['staff' => $staff,'genders'=> $genders]);
+    }
+
+    public function update_profile(Request $request){
+        $request->validate([
+            'surname' => 'required|alpha',
+            'othernames' => ['required',new alpha_space],
+            'date_of_birth' => 'required|date',
+            'gender' => 'required',
+            'department' => 'required',
+            'phone_number' => 'required|numeric|digits:11',
+            'email' => 'required|email'
+        ]);
+
+        // dd($request->all());
+
+        $staff = Staff::find(auth()->user()->id);
+// dd($staff);
+        $staff->surname = $request->surname;
+        $staff->othernames = $request->othernames;
+        $staff->date_of_birth = $request->date_of_birth;
+        $staff->gender = $request->gender;
+        $staff->department = $request->department;
+        $staff->phone_number = $request->phone_number;
+        $staff->email = $request->email;
+        $staff->save();
+
+        $user = User::find(auth()->user()->id);
+        $user->surname = $request->surname;
+        $user->othernames = $request->othernames;
+        $user->date_of_birth = $request->date_of_birth;
+        $user->gender = $request->gender;
+        $user->department = $request->department;
+        $user->phone_number = $request->phone_number;
+        $user->email = $request->email;
+        $user->save();
+        if(auth()->user()->user_type == 'staff'){
+            return redirect('/task');
+        }
+        return redirect('/');
     }
 }

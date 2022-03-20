@@ -2,12 +2,12 @@
 @section('content')
     <main class="w-full h-screen overflow-y-scroll">
         @include('layout.nav')
-        <div class="px-8 mt-4">
-            <div class="bg-white py-8 px-10">
-                <h1 class="text-2xl font-bold mb-4">Add New Staff</h1>
+        <div class="px-2 md:px-5 mt-4">
+            <div class="bg-white py-8 md:px-5 lg:px-10 px-3">
+                <h1 class="text-xl md:text-2xl font-bold mb-4">Add New Staff</h1>
                 <p class="font-bold text-red-500 my-3 text-center">The Default password is: password1</p>
                 <div class="w-full mx-auto gap-x-2">
-                    <form action="/new/staff" enctype="multipart/form-data" method="post" class="w-8/12 grid grid-cols-2 gap-x-4 mx-auto mt-4 items-center">
+                    <form action="/new/staff" enctype="multipart/form-data" method="post" class="w-11/12 md:w-8/12 grid md:grid-cols-2 gap-x-4 mx-auto mt-4 items-center">
                         @csrf
                         <div class=" mb-2">
                             <label class="font-bold block mb-1">Picture</label>
@@ -76,7 +76,7 @@
                                 <p class="mt-0.5 text-sm text-red-500">{{ $message }}</p>
                             @enderror
                         </div>
-                        <button class="px-8 py-3 bg-purple-400 text-white font-bold col-span-2 w-32 text-center">Submit</button>
+                        <button class="px-8 py-3 bg-purple-400 text-white font-bold md:col-span-2 w-32 text-center">Submit</button>
                     </form>
                 </div>
             </div>

@@ -46,7 +46,8 @@ Route::get('/logout',[NavigateController::class,'logout']);
 Route::get('/generate/report',[NavigateController::class,'view_generate']);
 Route::get('/new/admin',[NavigateController::class, 'new_admin']);
 Route::post('/new/admin',[NavigateController::class, 'store_admin']);
-
+Route::get('/edit/profile',[NavigateController::class,'view_profile']);
+Route::post('/edit/profile',[NavigateController::class,'update_profile']);
 Route::redirect('/home','/');
 
 //admin side
